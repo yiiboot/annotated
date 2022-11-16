@@ -57,12 +57,12 @@ final class AnnotationLoader
     {
         if ($class !== null) {
             foreach ($class->getAttributes($annotation) as $classAnnotation) {
-                yield new AnnotatedClass($class, $classAnnotation);
+                yield new AnnotatedClass($class, $classAnnotation->newInstance());
             }
         }
         foreach ($this->getTargets() as $target) {
             foreach ($target->getAttributes($annotation) as $classAnnotation) {
-                yield new AnnotatedClass($target, $classAnnotation);
+                yield new AnnotatedClass($target, $classAnnotation->newInstance());
             }
         }
     }
@@ -81,7 +81,7 @@ final class AnnotationLoader
         if ($class !== null) {
             foreach ($class->getMethods() as $method) {
                 foreach ($method->getAttributes($annotation) as $methodAnnotation) {
-                    yield new AnnotatedMethod($method, $methodAnnotation);
+                    yield new AnnotatedMethod($method, $methodAnnotation->newInstance());
                 }
             }
             return;
@@ -89,7 +89,7 @@ final class AnnotationLoader
         foreach ($this->getTargets() as $target) {
             foreach ($target->getMethods() as $method) {
                 foreach ($method->getAttributes($annotation) as $methodAnnotation) {
-                    yield new AnnotatedMethod($method, $methodAnnotation);
+                    yield new AnnotatedMethod($method, $methodAnnotation->newInstance());
                 }
             }
         }
@@ -109,7 +109,7 @@ final class AnnotationLoader
         if ($class !== null) {
             foreach ($class->getProperties() as $property) {
                 foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
-                    yield new AnnotatedProperty($property, $propertyAnnotation);
+                    yield new AnnotatedProperty($property, $propertyAnnotation->newInstance());
                 }
             }
             return;
@@ -117,7 +117,7 @@ final class AnnotationLoader
         foreach ($this->getTargets() as $target) {
             foreach ($target->getProperties() as $property) {
                 foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
-                    yield new AnnotatedProperty($property, $propertyAnnotation);
+                    yield new AnnotatedProperty($property, $propertyAnnotation->newInstance());
                 }
             }
         }
