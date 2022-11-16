@@ -10,6 +10,7 @@
 
 namespace Yiiboot\Annotated;
 
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -22,9 +23,9 @@ use ReflectionProperty;
 final class AnnotatedProperty
 {
     private ReflectionProperty $property;
-    private object $annotation;
+    private ReflectionAttribute $annotation;
 
-    public function __construct(ReflectionProperty $property, object $annotation)
+    public function __construct(ReflectionProperty $property, ReflectionAttribute $annotation)
     {
         $this->property = $property;
         $this->annotation = $annotation;
@@ -40,7 +41,7 @@ final class AnnotatedProperty
         return $this->property;
     }
 
-    public function getAnnotation(): object
+    public function getAnnotation(): ReflectionAttribute
     {
         return $this->annotation;
     }

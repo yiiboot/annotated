@@ -10,7 +10,6 @@
 
 namespace Yiiboot\Annotated;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Generator;
 use ReflectionClass;
 use Spiral\Tokenizer\ClassesInterface;
@@ -24,15 +23,19 @@ use Spiral\Tokenizer\ClassesInterface;
 final class AnnotationLoader
 {
     private ClassesInterface $classLocator;
-    private AnnotationReader $reader;
     private array $targets = [];
 
-    public function __construct(ClassesInterface $classLocator, AnnotationReader $reader = null)
+    public function __construct(ClassesInterface $classLocator)
     {
         $this->classLocator = $classLocator;
-        $this->reader = $reader ?? new AnnotationReader();
     }
 
+    /**
+     * the classes
+     *
+     * @param string[]|array $targets
+     * @return $this
+     */
     public function withTargets(array $targets): self
     {
         $new = clone $this;
@@ -53,19 +56,13 @@ final class AnnotationLoader
     public function findClasses(string $annotation, ?ReflectionClass $class = null): Generator
     {
         if ($class !== null) {
-            $annotations = $this->reader->getClassAnnotations($class);
-            foreach ($annotations as $classAnnotation) {
-                if ($classAnnotation instanceof $annotation) {
-                    yield new AnnotatedClass($class, $classAnnotation);
-                }
+            foreach ($class->getAttributes($annotation) as $classAnnotation) {
+                yield new AnnotatedClass($class, $classAnnotation);
             }
         }
         foreach ($this->getTargets() as $target) {
-            $annotations = $this->reader->getClassAnnotations($target);
-            foreach ($annotations as $classAnnotation) {
-                if ($classAnnotation instanceof $annotation) {
-                    yield new AnnotatedClass($target, $classAnnotation);
-                }
+            foreach ($target->getAttributes($annotation) as $classAnnotation) {
+                yield new AnnotatedClass($target, $classAnnotation);
             }
         }
     }
@@ -83,22 +80,16 @@ final class AnnotationLoader
     {
         if ($class !== null) {
             foreach ($class->getMethods() as $method) {
-                $annotations = $this->reader->getMethodAnnotations($method);
-                foreach ($annotations as $methodAnnotation) {
-                    if ($methodAnnotation instanceof $annotation) {
-                        yield new AnnotatedMethod($method, $methodAnnotation);
-                    }
+                foreach ($method->getAttributes($annotation) as $methodAnnotation) {
+                    yield new AnnotatedMethod($method, $methodAnnotation);
                 }
             }
             return;
         }
         foreach ($this->getTargets() as $target) {
             foreach ($target->getMethods() as $method) {
-                $annotations = $this->reader->getMethodAnnotations($method);
-                foreach ($annotations as $methodAnnotation) {
-                    if ($methodAnnotation instanceof $annotation) {
-                        yield new AnnotatedMethod($method, $methodAnnotation);
-                    }
+                foreach ($method->getAttributes($annotation) as $methodAnnotation) {
+                    yield new AnnotatedMethod($method, $methodAnnotation);
                 }
             }
         }
@@ -117,27 +108,24 @@ final class AnnotationLoader
     {
         if ($class !== null) {
             foreach ($class->getProperties() as $property) {
-                $annotations = $this->reader->getPropertyAnnotations($property);
-                foreach ($annotations as $propertyAnnotation) {
-                    if ($propertyAnnotation instanceof $annotation) {
-                        yield new AnnotatedProperty($property, $propertyAnnotation);
-                    }
+                foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
+                    yield new AnnotatedProperty($property, $propertyAnnotation);
                 }
             }
             return;
         }
         foreach ($this->getTargets() as $target) {
             foreach ($target->getProperties() as $property) {
-                $annotations = $this->reader->getPropertyAnnotations($property);
-                foreach ($annotations as $propertyAnnotation) {
-                    if ($propertyAnnotation instanceof $annotation) {
-                        yield new AnnotatedProperty($property, $propertyAnnotation);
-                    }
+                foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
+                    yield new AnnotatedProperty($property, $propertyAnnotation);
                 }
             }
         }
     }
 
+    /**
+     * @return ReflectionClass[]|Generator
+     */
     private function getTargets(): Generator
     {
         if ($this->targets === []) {

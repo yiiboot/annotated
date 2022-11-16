@@ -10,6 +10,7 @@
 
 namespace Yiiboot\Annotated;
 
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -22,9 +23,9 @@ use ReflectionMethod;
 final class AnnotatedMethod
 {
     private ReflectionMethod $method;
-    private object $annotation;
+    private ReflectionAttribute $annotation;
 
-    public function __construct(ReflectionMethod $method, object $annotation)
+    public function __construct(ReflectionMethod $method, ReflectionAttribute $annotation)
     {
         $this->method = $method;
         $this->annotation = $annotation;
@@ -40,7 +41,7 @@ final class AnnotatedMethod
         return $this->method;
     }
 
-    public function getAnnotation():object
+    public function getAnnotation(): ReflectionAttribute
     {
         return $this->annotation;
     }
