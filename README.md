@@ -2,18 +2,18 @@
     <a href="https://github.com/yiiboot" target="_blank">
         <img src="https://avatars.githubusercontent.com/u/118281946?s=600&u=b16475d97095b69a8f500ec2f29b8d05c3d02b3a&v=4" height="100px">
     </a>
-    <h1 align="center">YiiBoot _____</h1>
+    <h1 align="center">Yii Boot Annotated</h1>
     <br>
 </p>
 
-[![Latest Stable Version](https://poser.pugx.org/yiiboot/_____/v/stable.png)](https://packagist.org/packages/yiiboot/_____)
-[![Total Downloads](https://poser.pugx.org/yiiboot/_____/downloads.png)](https://packagist.org/packages/yiiboot/_____)
-[![Build status](https://github.com/yiiboot/_____/workflows/build/badge.svg)](https://github.com/yiiboot/_____/actions?query=workflow%3Abuild)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiiboot/_____/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiiboot/_____/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/yiiboot/_____/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiiboot/_____/?branch=master)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%yiiboot%2F_____%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiiboot/_____/master)
-[![static analysis](https://github.com/yiiboot/_____/workflows/static%20analysis/badge.svg)](https://github.com/yiiboot/_____/actions?query=workflow%3A%22static+analysis%22)
-[![type-coverage](https://shepherd.dev/github/yiiboot/_____/coverage.svg)](https://shepherd.dev/github/yiiboot/_____)
+[![Latest Stable Version](https://poser.pugx.org/yiiboot/annotated/v/stable.png)](https://packagist.org/packages/yiiboot/annotated)
+[![Total Downloads](https://poser.pugx.org/yiiboot/annotated/downloads.png)](https://packagist.org/packages/yiiboot/annotated)
+[![Build status](https://github.com/yiiboot/annotated/workflows/build/badge.svg)](https://github.com/yiiboot/annotated/actions?query=workflow%3Abuild)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiiboot/annotated/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiiboot/annotated/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/yiiboot/annotated/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiiboot/annotated/?branch=master)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%yiiboot%2Fannotated%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiiboot/annotated/master)
+[![static analysis](https://github.com/yiiboot/annotated/workflows/static%20analysis/badge.svg)](https://github.com/yiiboot/annotated/actions?query=workflow%3A%22static+analysis%22)
+[![type-coverage](https://shepherd.dev/github/yiiboot/annotated/coverage.svg)](https://shepherd.dev/github/yiiboot/annotated)
 
 The package ...
 
@@ -26,7 +26,7 @@ The package ...
 The package could be installed with composer:
 
 ```shell
-composer require yiiboot/_____
+composer require yiiboot/annotated
 ```
 
 ## General usage
@@ -74,7 +74,7 @@ Use [ComposerRequireChecker](https://github.com/maglnet/ComposerRequireChecker) 
 
 ## License
 
-The Yii _____ is free software. It is released under the terms of the Apache-2.0 License.
+The Yii Annotated is free software. It is released under the terms of the Apache-2.0 License.
 Please see [`LICENSE`](./LICENSE.md) for more information.
 
 Maintained by [Yii Boot](https://github.com/yiiboot).

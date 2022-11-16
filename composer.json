@@ -1,19 +1,17 @@
 {
-    "name": "yiiboot/_____",
+    "name": "yiiboot/annotated",
     "type": "library",
-    "description": "_____",
+    "description": "the yii3 annotation parser",
     "keywords": [
-        "_____"
+        "yii",
+        "yii3",
+        "annotation"
     ],
-    "homepage": "https://www.yiiframework.com/",
+    "homepage": "https://github.com/yiiboot",
     "license": "Apache-2.0",
     "support": {
-        "issues": "https://github.com/yiiboot/_____/issues?state=open",
-        "forum": "https://www.yiiframework.com/forum/",
-        "wiki": "https://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "chat": "https://t.me/yii3en",
-        "source": "https://github.com/yiiboot/_____"
+        "issues": "https://github.com/yiiboot/annotated/issues?state=open",
+        "source": "https://github.com/yiiboot/annotated"
     },
     "funding": [
         {
@@ -39,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiiboot\\_____\\": "src"
+            "Yiiboot\\Annotated\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiiboot\\_____\\Tests\\": "tests"
+            "Yiiboot\\Annotated\\Tests\\": "tests"
         }
     },
     "config": {
