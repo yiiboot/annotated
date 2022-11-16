@@ -85,8 +85,10 @@ Maintained by [Yii Boot](https://github.com/yiiboot).
 
 ## Follow updates
 
-[![Official website](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](https://www.yiiframework.com/)
-[![Twitter](https://img.shields.io/badge/twitter-follow-1DA1F2?logo=twitter&logoColor=1DA1F2&labelColor=555555?style=flat)](https://twitter.com/yiiframework)
-[![Telegram](https://img.shields.io/badge/telegram-join-1DA1F2?style=flat&logo=telegram)](https://t.me/yii3en)
-[![Facebook](https://img.shields.io/badge/facebook-join-1DA1F2?style=flat&logo=facebook&logoColor=ffffff)](https://www.facebook.com/groups/yiitalk)
-[![Slack](https://img.shields.io/badge/slack-join-1DA1F2?style=flat&logo=slack)](https://yiiframework.com/go/slack)
+[![Official website](https://img.shields.io/badge/Powered_by-Yii_Boot-green.svg?style=flat)](https://www.yiiframework.com/)
+
+## Inspired && Thanks
+
+- [Yii Software](https://github.com/yiisoft)
+- [Yii Stack](https://github.com/yiistack)
+- [Symfony](https://github.com/symfony/symfony)
