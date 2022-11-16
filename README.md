@@ -6,17 +6,6 @@
     <br>
 </p>
 
-[![Latest Stable Version](https://poser.pugx.org/yiiboot/annotated/v/stable.png)](https://packagist.org/packages/yiiboot/annotated)
-[![Total Downloads](https://poser.pugx.org/yiiboot/annotated/downloads.png)](https://packagist.org/packages/yiiboot/annotated)
-[![Build status](https://github.com/yiiboot/annotated/workflows/build/badge.svg)](https://github.com/yiiboot/annotated/actions?query=workflow%3Abuild)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiiboot/annotated/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiiboot/annotated/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/yiiboot/annotated/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiiboot/annotated/?branch=master)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%yiiboot%2Fannotated%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiiboot/annotated/master)
-[![static analysis](https://github.com/yiiboot/annotated/workflows/static%20analysis/badge.svg)](https://github.com/yiiboot/annotated/actions?query=workflow%3A%22static+analysis%22)
-[![type-coverage](https://shepherd.dev/github/yiiboot/annotated/coverage.svg)](https://shepherd.dev/github/yiiboot/annotated)
-
-The package ...
-
 ## Requirements
 
 - PHP 8.1 or higher.
