@@ -19,7 +19,7 @@ use ReflectionMethod;
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/16 19:45
  */
-final class AnnotatedMethod
+final class AnnotatedMethod implements AnnotatedInterface
 {
     private ReflectionMethod $method;
     private object $annotation;
@@ -43,5 +43,15 @@ final class AnnotatedMethod
     public function getAnnotation(): object
     {
         return $this->annotation;
+    }
+
+    /**
+     * get the annotation class
+     *
+     * @return string
+     */
+    public function getAnnotationClass(): string
+    {
+        return get_class($this->annotation);
     }
 }

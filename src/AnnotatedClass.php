@@ -18,7 +18,7 @@ use ReflectionClass;
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/16 19:41
  */
-final class AnnotatedClass
+final class AnnotatedClass implements AnnotatedInterface
 {
     private ReflectionClass $class;
     private object $annotation;
@@ -47,5 +47,15 @@ final class AnnotatedClass
     public function getAnnotation(): object
     {
         return $this->annotation;
+    }
+
+    /**
+     * get the annotation class
+     *
+     * @return string
+     */
+    public function getAnnotationClass(): string
+    {
+        return get_class($this->annotation);
     }
 }

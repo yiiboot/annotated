@@ -19,7 +19,7 @@ use ReflectionProperty;
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/16 19:46
  */
-final class AnnotatedProperty
+final class AnnotatedProperty implements AnnotatedInterface
 {
     private ReflectionProperty $property;
     private object $annotation;
@@ -43,5 +43,15 @@ final class AnnotatedProperty
     public function getAnnotation(): object
     {
         return $this->annotation;
+    }
+
+    /**
+     * get the annotation class
+     *
+     * @return string
+     */
+    public function getAnnotationClass(): string
+    {
+        return get_class($this->annotation);
     }
 }

@@ -53,7 +53,7 @@ final class AnnotationLoader
      * @return AnnotatedClass[]|Generator
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public function findClasses(string $annotation, ?ReflectionClass $class = null): Generator
+    public function findClasses(?string $annotation = null, ?ReflectionClass $class = null): Generator
     {
         if ($class !== null) {
             foreach ($class->getAttributes($annotation) as $classAnnotation) {
@@ -76,7 +76,7 @@ final class AnnotationLoader
      * @return AnnotatedMethod[]|Generator
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public function findMethods(string $annotation, ?ReflectionClass $class = null): Generator
+    public function findMethods(?string $annotation = null, ?ReflectionClass $class = null): Generator
     {
         if ($class !== null) {
             foreach ($class->getMethods() as $method) {
@@ -104,7 +104,7 @@ final class AnnotationLoader
      * @return AnnotatedProperty[]|Generator
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public function findProperties(string $annotation, ?ReflectionClass $class = null): Generator
+    public function findProperties(?string $annotation = null, ?ReflectionClass $class = null): Generator
     {
         if ($class !== null) {
             foreach ($class->getProperties() as $property) {
