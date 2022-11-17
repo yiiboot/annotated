@@ -59,6 +59,10 @@ class AnnotationScanner
 
         foreach ($loader->findClasses($annotation) as $annotatedClass) {
 
+            if ($annotatedClass->getClass()->isAbstract()) {
+                continue;
+            }
+
             $this->handleAnnotatedClass($annotatedClass);
 
             foreach ($loader->findMethods($annotation, $annotatedClass->getClass()) as $annotatedMethod) {
@@ -135,9 +139,13 @@ class AnnotationScanner
     {
         $annotation = $annotatedTarget->getAnnotationClass();
 
+        if ($annotation === \Attribute::class) {
+            return;
+        }
+
         foreach ($handlers as $name => $handler) {
             if (is_callable($handler)) {
-                call_user_func($handler, $annotatedTarget);
+                call_user_func($handler, $name, $annotatedTarget);
             } else if ($handler instanceof AnnotatedHandlerInterface) {
                 if ($name === '*' || $handler->support($annotation)) {
                     $handler->handle($annotatedTarget);
