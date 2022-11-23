@@ -11,30 +11,28 @@
 namespace Yiiboot\Annotated\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
-use Yiiboot\Annotated\AnnotationScanner;
+use Yiiboot\Annotated\AnnotationLoader;
 use Yiiboot\Annotated\Tests\TestModel\Attribute\ClassAttribute;
-use Yiiboot\Annotated\Tests\TestModel\Attribute\MethodAttribute;
-use Yiiboot\Annotated\Tests\TestModel\Attribute\PropertyAttribute;
 use Yiiboot\Annotated\Tests\TestModel\Handler\AttributeHandler;
 
 class AnnotationScannerTest extends TestCase
 {
     public function testScan()
     {
-        $scanner = new AnnotationScanner();
-
         $handler = new AttributeHandler();
-        $scanner->addAnnotatedClassHandler('book', $handler);
-        $scanner->addAnnotatedMethodHandler('book', $handler);
-        $scanner->addAnnotatedPropertyHandler('book', $handler);
 
-        $finder = Finder::create()->files()->in(__DIR__ .'/TestModel')->name('*.php');
+        $loader = new AnnotationLoader([
+            __DIR__ . '/TestModel'
+        ], [
+            $handler
+        ]);
 
-        $scanner->scan($finder);
+        $time = microtime(true);
+
+        $loader->load();
+
+        echo (microtime(true) - $time) * 1000 . "\n";
 
         $this->assertContains(ClassAttribute::class, $handler->attributes);
-        $this->assertContains(MethodAttribute::class, $handler->attributes);
-        $this->assertContains(PropertyAttribute::class, $handler->attributes);
     }
 }

@@ -10,13 +10,26 @@
 
 namespace Yiiboot\Annotated;
 
+use ReflectionClass;
+
 interface AnnotatedHandlerInterface
 {
+    public function getAnnotation(): string;
+
+    public function getTarget(): int;
+
     /**
-     * get the annotation is supported
+     * handle the AnnotatedClass
      *
-     * @param string $annotation
-     * @return bool
+     * @param AnnotatedClass|AnnotatedMethod|AnnotatedProperty $annotated
+     * @return void
      */
-    public function support(string $annotation): bool;
+    public function handle(AnnotatedClass|AnnotatedMethod|AnnotatedProperty $annotated): void;
+
+    /**
+     * flush something after handle all
+     *
+     * @return void
+     */
+    public function flush(): void;
 }

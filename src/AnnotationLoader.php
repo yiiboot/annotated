@@ -10,9 +10,10 @@
 
 namespace Yiiboot\Annotated;
 
+use Attribute;
 use Generator;
 use ReflectionClass;
-use Spiral\Tokenizer\ClassesInterface;
+use Symfony\Component\Finder\Finder;
 
 /**
  * the annotation loader
@@ -22,119 +23,164 @@ use Spiral\Tokenizer\ClassesInterface;
  */
 final class AnnotationLoader
 {
-    private ClassesInterface $classLocator;
-    private array $targets = [];
-
-    public function __construct(ClassesInterface $classLocator)
-    {
-        $this->classLocator = $classLocator;
-    }
+    private Finder $finder;
 
     /**
-     * the classes
-     *
-     * @param string[]|array $targets
-     * @return $this
+     * @var array<string, AnnotatedHandlerInterface>
      */
-    public function withTargets(array $targets): self
-    {
-        $new = clone $this;
-        $new->targets = $targets;
+    private array $handlers = [];
 
-        return $new;
+    public function __construct(array|string $paths, array $handlers)
+    {
+        $this->finder = Finder::create()->in($paths)->ignoreVCS(true)->name('*.php');
+        $this->addHandler(...$handlers);
     }
 
-    /**
-     * Find all classes with given annotation.
-     *
-     * @param string $annotation
-     * @param ReflectionClass|null $class
-     *
-     * @return AnnotatedClass[]|Generator
-     * @psalm-suppress ArgumentTypeCoercion
-     */
-    public function findClasses(?string $annotation = null, ?ReflectionClass $class = null): Generator
+    public function load(): void
     {
-        if ($class !== null) {
-            foreach ($class->getAttributes($annotation) as $classAnnotation) {
-                yield new AnnotatedClass($class, $classAnnotation->newInstance());
-            }
-        }
-        foreach ($this->getTargets() as $target) {
-            foreach ($target->getAttributes($annotation) as $classAnnotation) {
-                yield new AnnotatedClass($target, $classAnnotation->newInstance());
-            }
-        }
-    }
-
-    /**
-     * Find all methods with given annotation.
-     *
-     * @param string $annotation
-     * @param ReflectionClass|null $class
-     *
-     * @return AnnotatedMethod[]|Generator
-     * @psalm-suppress ArgumentTypeCoercion
-     */
-    public function findMethods(?string $annotation = null, ?ReflectionClass $class = null): Generator
-    {
-        if ($class !== null) {
-            foreach ($class->getMethods() as $method) {
-                foreach ($method->getAttributes($annotation) as $methodAnnotation) {
-                    yield new AnnotatedMethod($method, $methodAnnotation->newInstance());
-                }
-            }
+        if (empty($this->handlers)) {
             return;
         }
-        foreach ($this->getTargets() as $target) {
-            foreach ($target->getMethods() as $method) {
-                foreach ($method->getAttributes($annotation) as $methodAnnotation) {
-                    yield new AnnotatedMethod($method, $methodAnnotation->newInstance());
+
+        foreach ($this->getTargets() as $class) {
+
+            if ($class->isAbstract() || $class->isInterface()) {
+                continue;
+            }
+
+            foreach ($this->handlers as $handler) {
+                $target = $handler->getTarget();
+                $annotation = $handler->getAnnotation();
+                $targetAll = $target & Attribute::TARGET_ALL;
+
+                if ($targetAll || $target & Attribute::TARGET_CLASS) {
+                    $annotatedClassExists = false;
+                    foreach (AnnotatedHelper::findClasses($class, $annotation) as $annotatedClass) {
+                        $handler->handle($annotatedClass);
+                        $annotatedClassExists = true;
+                    }
+                    if ($annotatedClassExists) {
+                        continue;
+                    }
+                }
+                if ($targetAll || $target & Attribute::TARGET_METHOD) {
+                    foreach (AnnotatedHelper::findMethods($class, $annotation) as $annotatedMethod) {
+                        $handler->handle($annotatedMethod);
+                    }
+                }
+                if ($targetAll || $target & Attribute::TARGET_PROPERTY) {
+                    foreach (AnnotatedHelper::findProperties($class, $annotation) as $annotatedProperty) {
+                        $handler->handle($annotatedProperty);
+                    }
                 }
             }
         }
+
+        foreach ($this->handlers as $handler) {
+            $handler->flush();
+        }
     }
 
-    /**
-     * Find all properties with given annotation.
-     *
-     * @param string $annotation
-     * @param ReflectionClass|null $class
-     *
-     * @return AnnotatedProperty[]|Generator
-     * @psalm-suppress ArgumentTypeCoercion
-     */
-    public function findProperties(?string $annotation = null, ?ReflectionClass $class = null): Generator
+    public function addHandler(AnnotatedHandlerInterface ...$handlers): void
     {
-        if ($class !== null) {
-            foreach ($class->getProperties() as $property) {
-                foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
-                    yield new AnnotatedProperty($property, $propertyAnnotation->newInstance());
-                }
-            }
-            return;
-        }
-        foreach ($this->getTargets() as $target) {
-            foreach ($target->getProperties() as $property) {
-                foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
-                    yield new AnnotatedProperty($property, $propertyAnnotation->newInstance());
-                }
-            }
+        foreach ($handlers as $handler) {
+            $this->handlers[$handler->getAnnotation()] = $handler;
         }
     }
 
+    public function removeHandler(string $annotation): void
+    {
+        unset($this->handlers[$annotation]);
+    }
+
+    public function hasHandler(string $annotation): bool
+    {
+        return isset($this->handlers[$annotation]);
+    }
+
     /**
-     * @return ReflectionClass[]|Generator
+     * @return Generator|ReflectionClass[]
      */
     private function getTargets(): Generator
     {
-        if ($this->targets === []) {
-            yield from $this->classLocator->getClasses();
-            return;
+        foreach ($this->finder->getIterator() as $file) {
+            if ($file->isFile()) {
+                $class = $this->findClass($file);
+                if ($class) {
+                    try {
+                        yield new ReflectionClass($class);
+                    } catch (\Throwable $e) {
+                    }
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the full class name for the first class in the file.
+     */
+    protected function findClass(string $file): string|false
+    {
+        $class = false;
+        $namespace = false;
+        $tokens = token_get_all(file_get_contents($file));
+
+        if (1 === \count($tokens) && \T_INLINE_HTML === $tokens[0][0]) {
+            throw new \InvalidArgumentException(sprintf('The file "%s" does not contain PHP code. Did you forgot to add the "<?php" start tag at the beginning of the file?', $file));
         }
 
-        foreach ($this->targets as $target) {
-            yield from $this->classLocator->getClasses($target);
+        $nsTokens = [\T_NS_SEPARATOR => true, \T_STRING => true];
+        if (\defined('T_NAME_QUALIFIED')) {
+            $nsTokens[\T_NAME_QUALIFIED] = true;
         }
+        for ($i = 0; isset($tokens[$i]); ++$i) {
+            $token = $tokens[$i];
+            if (!isset($token[1])) {
+                continue;
+            }
+
+            if (true === $class && \T_STRING === $token[0]) {
+                return $namespace . '\\' . $token[1];
+            }
+
+            if (true === $namespace && isset($nsTokens[$token[0]])) {
+                $namespace = $token[1];
+                while (isset($tokens[++$i][1], $nsTokens[$tokens[$i][0]])) {
+                    $namespace .= $tokens[$i][1];
+                }
+                $token = $tokens[$i];
+            }
+
+            if (\T_CLASS === $token[0]) {
+                // Skip usage of ::class constant and anonymous classes
+                $skipClassToken = false;
+                for ($j = $i - 1; $j > 0; --$j) {
+                    if (!isset($tokens[$j][1])) {
+                        if ('(' === $tokens[$j] || ',' === $tokens[$j]) {
+                            $skipClassToken = true;
+                        }
+                        break;
+                    }
+
+                    if (\T_DOUBLE_COLON === $tokens[$j][0] || \T_NEW === $tokens[$j][0]) {
+                        $skipClassToken = true;
+                        break;
+                    } elseif (!\in_array($tokens[$j][0], [\T_WHITESPACE, \T_DOC_COMMENT, \T_COMMENT])) {
+                        break;
+                    }
+                }
+
+                if (!$skipClassToken) {
+                    $class = true;
+                }
+            }
+
+            if (\T_NAMESPACE === $token[0]) {
+                $namespace = true;
+            }
+        }
+
+        return false;
     }
 }

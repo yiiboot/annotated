@@ -10,25 +10,24 @@
 
 namespace Yiiboot\Annotated\Tests\TestModel\Handler;
 
+use Yiiboot\Annotated\AbstractAnnotatedHandler;
 use Yiiboot\Annotated\AnnotatedClass;
-use Yiiboot\Annotated\AnnotatedClassHandlerInterface;
 use Yiiboot\Annotated\AnnotatedMethod;
-use Yiiboot\Annotated\AnnotatedMethodHandlerInterface;
 use Yiiboot\Annotated\AnnotatedProperty;
-use Yiiboot\Annotated\AnnotatedPropertyHandlerInterface;
+use Yiiboot\Annotated\Tests\TestModel\Attribute\ClassAttribute;
 
-class AttributeHandler implements AnnotatedClassHandlerInterface, AnnotatedMethodHandlerInterface, AnnotatedPropertyHandlerInterface
+class AttributeHandler extends AbstractAnnotatedHandler
 {
 
     public array $attributes = [];
 
-    public function handle(AnnotatedClass|AnnotatedProperty|AnnotatedMethod $annotated): void
+    public function getAnnotation(): string
     {
-        $this->attributes[] = $annotated->getAnnotationClass();
+        return ClassAttribute::class;
     }
 
-    public function support(string $annotation): bool
+    public final function handle(AnnotatedClass|AnnotatedMethod|AnnotatedProperty $annotated): void
     {
-        return true;
+        $this->attributes[] = get_class($annotated->getAnnotation());
     }
 }
