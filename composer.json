@@ -1,7 +1,7 @@
 {
-    "name": "yiiboot/annotated",
+    "name": "yiiboot/attributed",
     "type": "library",
-    "description": "the yii3 annotation parser",
+    "description": "the yii3 attribute parser",
     "keywords": [
         "yii",
         "yii3",
@@ -10,8 +10,8 @@
     "homepage": "https://github.com/yiiboot",
     "license": "Apache-2.0",
     "support": {
-        "issues": "https://github.com/yiiboot/annotated/issues?state=open",
-        "source": "https://github.com/yiiboot/annotated"
+        "issues": "https://github.com/yiiboot/attributed/issues?state=open",
+        "source": "https://github.com/yiiboot/attributed"
     },
     "funding": [
         {
@@ -38,12 +38,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiiboot\\Annotated\\": "src"
+            "Yiiboot\\Attributed\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiiboot\\Annotated\\Tests\\": "tests"
+            "Yiiboot\\Attributed\\Tests\\": "tests"
         }
     },
     "config": {

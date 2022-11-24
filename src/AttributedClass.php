@@ -8,29 +8,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Yiiboot\Annotated;
+namespace Yiiboot\Attributed;
 
 use ReflectionClass;
 
 /**
- * the annotated class wrapper
+ * the Attributed class wrapper
  *
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/16 19:41
  */
-final class AnnotatedClass implements AnnotatedInterface
+final class AttributedClass implements AttributedInterface
 {
     private ReflectionClass $class;
-    private object $annotation;
+    private object $attribute;
 
-    public function __construct(ReflectionClass $class, object $annotation)
+    public function __construct(ReflectionClass $class, object $attribute)
     {
         $this->class = $class;
-        $this->annotation = $annotation;
+        $this->attribute = $attribute;
     }
 
     /**
-     * get the annotated class
+     * get the Attributed class
      *
      * @return ReflectionClass
      */
@@ -40,22 +40,22 @@ final class AnnotatedClass implements AnnotatedInterface
     }
 
     /**
-     * get the annotation object
+     * get the attribute object
      *
      * @return object
      */
-    public function getAnnotation(): object
+    public function getAttribute(): object
     {
-        return $this->annotation;
+        return $this->attribute;
     }
 
     /**
-     * get the annotation class
+     * get the attribute class
      *
      * @return string
      */
-    public function getAnnotationClass(): string
+    public function getAttributeClass(): string
     {
-        return get_class($this->annotation);
+        return get_class($this->attribute);
     }
 }

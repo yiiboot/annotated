@@ -2,7 +2,7 @@
     <a href="https://github.com/yiiboot" target="_blank">
         <img src="https://avatars.githubusercontent.com/u/118281946?s=600&u=b16475d97095b69a8f500ec2f29b8d05c3d02b3a&v=4" height="100px">
     </a>
-    <h1 align="center">Yii Boot Annotated</h1>
+    <h1 align="center">Yii Boot Attributed</h1>
     <br>
 </p>
 
@@ -15,7 +15,7 @@
 The package could be installed with composer:
 
 ```shell
-composer require yiiboot/annotated
+composer require yiiboot/attributed
 ```
 
 ## General usage
@@ -63,7 +63,7 @@ Use [ComposerRequireChecker](https://github.com/maglnet/ComposerRequireChecker) 
 
 ## License
 
-The Yii Annotated is free software. It is released under the terms of the Apache-2.0 License.
+The Yii Attributed is free software. It is released under the terms of the Apache-2.0 License.
 Please see [`LICENSE`](./LICENSE.md) for more information.
 
 Maintained by [Yii Boot](https://github.com/yiiboot).

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Yiiboot\Annotated;
+namespace Yiiboot\Attributed;
 
 use Attribute;
 use Generator;
@@ -21,12 +21,12 @@ use Symfony\Component\Finder\Finder;
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/16 19:47
  */
-final class AnnotationLoader
+final class AttributedLoader
 {
     private Finder $finder;
 
     /**
-     * @var array<string, AnnotatedHandlerInterface>
+     * @var array<string, AttributedHandlerInterface>
      */
     private array $handlers = [];
 
@@ -53,25 +53,26 @@ final class AnnotationLoader
                 $annotation = $handler->getAnnotation();
                 $targetAll = $target & Attribute::TARGET_ALL;
 
+                $items = [];
+
                 if ($targetAll || $target & Attribute::TARGET_CLASS) {
-                    $annotatedClassExists = false;
-                    foreach (AnnotatedHelper::findClasses($class, $annotation) as $annotatedClass) {
-                        $handler->handle($annotatedClass);
-                        $annotatedClassExists = true;
-                    }
-                    if ($annotatedClassExists) {
-                        continue;
+                    foreach (AttributedHelper::findClasses($class, $annotation) as $AttributedClass) {
+                        $items[] = $AttributedClass;
                     }
                 }
                 if ($targetAll || $target & Attribute::TARGET_METHOD) {
-                    foreach (AnnotatedHelper::findMethods($class, $annotation) as $annotatedMethod) {
-                        $handler->handle($annotatedMethod);
+                    foreach (AttributedHelper::findMethods($class, $annotation) as $AttributedMethod) {
+                        $items[] = $AttributedMethod;
                     }
                 }
                 if ($targetAll || $target & Attribute::TARGET_PROPERTY) {
-                    foreach (AnnotatedHelper::findProperties($class, $annotation) as $annotatedProperty) {
-                        $handler->handle($annotatedProperty);
+                    foreach (AttributedHelper::findProperties($class, $annotation) as $AttributedProperty) {
+                        $items[] = $AttributedProperty;
                     }
+                }
+
+                if ($items) {
+                    $handler->handle($items);
                 }
             }
         }
@@ -81,7 +82,7 @@ final class AnnotationLoader
         }
     }
 
-    public function addHandler(AnnotatedHandlerInterface ...$handlers): void
+    public function addHandler(AttributedHandlerInterface ...$handlers): void
     {
         foreach ($handlers as $handler) {
             $this->handlers[$handler->getAnnotation()] = $handler;

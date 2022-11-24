@@ -8,23 +8,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Yiiboot\Annotated;
+namespace Yiiboot\Attributed;
 
 use ReflectionClass;
 
-interface AnnotatedHandlerInterface
+interface AttributedHandlerInterface
 {
-    public function getAnnotation(): string;
+    public function getAttribute(): string;
 
     public function getTarget(): int;
 
     /**
-     * handle the AnnotatedClass
+     * handle the AttributedClass
      *
-     * @param AnnotatedClass|AnnotatedMethod|AnnotatedProperty $annotated
+     * @param AttributedInterface[] $attributeds
      * @return void
      */
-    public function handle(AnnotatedClass|AnnotatedMethod|AnnotatedProperty $annotated): void;
+    public function handle(array $attributeds): void;
 
     /**
      * flush something after handle all

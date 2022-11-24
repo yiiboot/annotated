@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Yiiboot\Annotated\Tests\TestModel\Attribute;
+namespace Yiiboot\Attributed\Tests\TestModel\Attribute;
 
 use Attribute;
 

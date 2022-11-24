@@ -8,18 +8,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Yiiboot\Annotated;
+namespace Yiiboot\Attributed;
 
 use Attribute;
 use ReflectionClass;
 
 /**
- * the abstract AnnotatedHandler
+ * the abstract AttributedHandler
  *
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/18 00:52
  */
-abstract class AbstractAnnotatedHandler implements AnnotatedHandlerInterface
+abstract class AbstractAttributedHandler implements AttributedHandlerInterface
 {
     private ?int $target = null;
 

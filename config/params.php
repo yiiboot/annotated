@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 return [
-    'yiiboot/annotated' => [
+    'yiiboot/attributed' => [
         'paths' => [],
         'handlers' => []
     ]

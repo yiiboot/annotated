@@ -8,16 +8,15 @@
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\Finder\Finder;
-use Yiiboot\Annotated\AnnotationLoader;
+use Yiiboot\Attributed\AttributedLoader;
 use Yiisoft\Definitions\ReferencesArray;
 
 /** @var array $params */
 return [
-    AnnotationLoader::class => [
+    AttributedLoader::class => [
         '__construct()' => [
-            'paths' => $params['yiiboot/annotated']['paths'] ?? [],
-            'handlers' => ReferencesArray::from($params['yiiboot/annotated']['handlers'] ?? [])
+            'paths' => $params['yiiboot/attributed']['paths'] ?? [],
+            'handlers' => ReferencesArray::from($params['yiiboot/attributed']['handlers'] ?? [])
         ]
     ]
 ];

@@ -8,20 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Yiiboot\Annotated\Tests;
+namespace Yiiboot\Attributed\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Yiiboot\Annotated\AnnotationLoader;
-use Yiiboot\Annotated\Tests\TestModel\Attribute\ClassAttribute;
-use Yiiboot\Annotated\Tests\TestModel\Handler\AttributeHandler;
+use Yiiboot\Attributed\AttributedLoader;
+use Yiiboot\Attributed\Tests\TestModel\Attribute\ClassAttribute;
+use Yiiboot\Attributed\Tests\TestModel\Handler\AttributedHandler;
 
-class AnnotationScannerTest extends TestCase
+class AttributedLoaderTest extends TestCase
 {
     public function testScan()
     {
-        $handler = new AttributeHandler();
+        $handler = new AttributedHandler();
 
-        $loader = new AnnotationLoader([
+        $loader = new AttributedLoader([
             __DIR__ . '/TestModel'
         ], [
             $handler
