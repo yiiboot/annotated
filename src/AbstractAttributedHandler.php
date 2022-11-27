@@ -26,7 +26,7 @@ abstract class AbstractAttributedHandler implements AttributedHandlerInterface
     public final function getTarget(): int
     {
         if ($this->target === null) {
-            $class = new ReflectionClass($this->getAnnotation());
+            $class = new ReflectionClass($this->getAttribute());
             foreach ($class->getAttributes(Attribute::class) as $attribute) {
                 $attribute = $attribute->newInstance();
                 $this->target = $attribute->flags;

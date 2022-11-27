@@ -10,12 +10,22 @@
 
 namespace Yiiboot\Attributed;
 
-use ReflectionClass;
-
+/**
+ * Attribute handler
+ *
+ * @author niqingyang<niqy@qq.com>
+ * @date 2022/11/27 20:09
+ */
 interface AttributedHandlerInterface
 {
+    /**
+     * @return string
+     */
     public function getAttribute(): string;
 
+    /**
+     * @return int
+     */
     public function getTarget(): int;
 
     /**

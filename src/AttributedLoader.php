@@ -16,7 +16,7 @@ use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
 /**
- * the annotation loader
+ * the attribute loader
  *
  * @author niqingyang<niqy@qq.com>
  * @date 2022/11/16 19:47
@@ -30,6 +30,8 @@ final class AttributedLoader
      */
     private array $handlers = [];
 
+    private bool $loaded = false;
+
     public function __construct(array|string $paths, array $handlers)
     {
         $this->finder = Finder::create()->in($paths)->ignoreVCS(true)->name('*.php');
@@ -38,6 +40,10 @@ final class AttributedLoader
 
     public function load(): void
     {
+        if ($this->loaded) {
+            return;
+        }
+
         if (empty($this->handlers)) {
             return;
         }
@@ -50,23 +56,23 @@ final class AttributedLoader
 
             foreach ($this->handlers as $handler) {
                 $target = $handler->getTarget();
-                $annotation = $handler->getAnnotation();
+                $attribute = $handler->getAttribute();
                 $targetAll = $target & Attribute::TARGET_ALL;
 
                 $items = [];
 
                 if ($targetAll || $target & Attribute::TARGET_CLASS) {
-                    foreach (AttributedHelper::findClasses($class, $annotation) as $AttributedClass) {
+                    foreach (AttributedHelper::findClasses($class, $attribute) as $AttributedClass) {
                         $items[] = $AttributedClass;
                     }
                 }
                 if ($targetAll || $target & Attribute::TARGET_METHOD) {
-                    foreach (AttributedHelper::findMethods($class, $annotation) as $AttributedMethod) {
+                    foreach (AttributedHelper::findMethods($class, $attribute) as $AttributedMethod) {
                         $items[] = $AttributedMethod;
                     }
                 }
                 if ($targetAll || $target & Attribute::TARGET_PROPERTY) {
-                    foreach (AttributedHelper::findProperties($class, $annotation) as $AttributedProperty) {
+                    foreach (AttributedHelper::findProperties($class, $attribute) as $AttributedProperty) {
                         $items[] = $AttributedProperty;
                     }
                 }
@@ -80,23 +86,25 @@ final class AttributedLoader
         foreach ($this->handlers as $handler) {
             $handler->flush();
         }
+
+        $this->loaded = true;
     }
 
-    public function addHandler(AttributedHandlerInterface ...$handlers): void
+    protected function addHandler(AttributedHandlerInterface ...$handlers): void
     {
         foreach ($handlers as $handler) {
-            $this->handlers[$handler->getAnnotation()] = $handler;
+            $this->handlers[$handler->getAttribute()] = $handler;
         }
     }
 
-    public function removeHandler(string $annotation): void
+    protected function removeHandler(string $attribute): void
     {
-        unset($this->handlers[$annotation]);
+        unset($this->handlers[$attribute]);
     }
 
-    public function hasHandler(string $annotation): bool
+    protected function hasHandler(string $attribute): bool
     {
-        return isset($this->handlers[$annotation]);
+        return isset($this->handlers[$attribute]);
     }
 
     /**

@@ -16,53 +16,53 @@ use ReflectionClass;
 class AttributedHelper
 {
     /**
-     * Find all classes with given annotation.
+     * Find all classes with given attribute.
      *
      * @param ReflectionClass $class
      *
-     * @param string|null $annotation
+     * @param string|null $attribute
      * @return Generator|AttributedClass[]
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public static function findClasses(ReflectionClass $class, string $annotation = null): Generator
+    public static function findClasses(ReflectionClass $class, string $attribute = null): Generator
     {
-        foreach ($class->getAttributes($annotation) as $classAnnotation) {
-            yield new AttributedClass($class, $classAnnotation->newInstance());
+        foreach ($class->getAttributes($attribute) as $classAttribute) {
+            yield new AttributedClass($class, $classAttribute->newInstance());
         }
     }
 
     /**
-     * Find all methods with given annotation.
+     * Find all methods with given attribute.
      *
      * @param ReflectionClass $class
      *
-     * @param string|null $annotation
+     * @param string|null $attribute
      * @return Generator|AttributedMethod[]
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public static function findMethods(ReflectionClass $class, string $annotation = null): Generator
+    public static function findMethods(ReflectionClass $class, string $attribute = null): Generator
     {
         foreach ($class->getMethods() as $method) {
-            foreach ($method->getAttributes($annotation) as $methodAnnotation) {
-                yield new AttributedMethod($method, $methodAnnotation->newInstance());
+            foreach ($method->getAttributes($attribute) as $methodAttribute) {
+                yield new AttributedMethod($method, $methodAttribute->newInstance());
             }
         }
     }
 
     /**
-     * Find all properties with given annotation.
+     * Find all properties with given attribute.
      *
      * @param ReflectionClass $class
      *
-     * @param string|null $annotation
+     * @param string|null $attribute
      * @return Generator|AttributedProperty[]
      * @psalm-suppress ArgumentTypeCoercion
      */
-    public static function findProperties(ReflectionClass $class, string $annotation = null): Generator
+    public static function findProperties(ReflectionClass $class, string $attribute = null): Generator
     {
         foreach ($class->getProperties() as $property) {
-            foreach ($property->getAttributes($annotation) as $propertyAnnotation) {
-                yield new AttributedProperty($property, $propertyAnnotation->newInstance());
+            foreach ($property->getAttributes($attribute) as $propertyAttribute) {
+                yield new AttributedProperty($property, $propertyAttribute->newInstance());
             }
         }
     }
