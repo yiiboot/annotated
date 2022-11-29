@@ -23,6 +23,18 @@ abstract class AbstractAttributedHandler implements AttributedHandlerInterface
 {
     private ?int $target = null;
 
+    /**
+     * @inheritDoc
+     */
+    public function support(ReflectionClass $class): bool
+    {
+        // 默认不支持抽象类和接口
+        if ($class->isAbstract() || $class->isInterface()) {
+            return false;
+        }
+        return true;
+    }
+
     public final function getTarget(): int
     {
         if ($this->target === null) {

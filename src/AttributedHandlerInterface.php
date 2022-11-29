@@ -10,6 +10,8 @@
 
 namespace Yiiboot\Attributed;
 
+use ReflectionClass;
+
 /**
  * Attribute handler
  *
@@ -19,11 +21,21 @@ namespace Yiiboot\Attributed;
 interface AttributedHandlerInterface
 {
     /**
+     * 判断是否支持
+     *
+     * @param ReflectionClass $class
+     * @return bool
+     */
+    public function support(ReflectionClass $class): bool;
+
+    /**
      * @return string
      */
     public function getAttribute(): string;
 
     /**
+     * the attribute target
+     *
      * @return int
      */
     public function getTarget(): int;

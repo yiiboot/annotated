@@ -23,18 +23,19 @@ use Symfony\Component\Finder\Finder;
  */
 final class AttributedLoader
 {
-    private Finder $finder;
+
+    private bool $loaded = false;
+
+    private array|string $paths;
 
     /**
      * @var array<string, AttributedHandlerInterface>
      */
     private array $handlers = [];
 
-    private bool $loaded = false;
-
     public function __construct(array|string $paths, array $handlers)
     {
-        $this->finder = Finder::create()->in($paths)->ignoreVCS(true)->name('*.php');
+        $this->paths = $paths;
         $this->addHandler(...$handlers);
     }
 
@@ -48,13 +49,18 @@ final class AttributedLoader
             return;
         }
 
+        if (empty($this->paths)) {
+            return;
+        }
+
         foreach ($this->getTargets() as $class) {
 
-            if ($class->isAbstract() || $class->isInterface()) {
-                continue;
-            }
-
             foreach ($this->handlers as $handler) {
+
+                if (!$handler->support($class)) {
+                    continue;
+                }
+
                 $target = $handler->getTarget();
                 $attribute = $handler->getAttribute();
                 $targetAll = $target & Attribute::TARGET_ALL;
@@ -112,7 +118,9 @@ final class AttributedLoader
      */
     private function getTargets(): Generator
     {
-        foreach ($this->finder->getIterator() as $file) {
+        $finder = Finder::create()->in($this->paths)->ignoreVCS(true)->name('*.php');
+
+        foreach ($finder->getIterator() as $file) {
             if ($file->isFile()) {
                 $class = $this->findClass($file);
                 if ($class) {
@@ -120,7 +128,6 @@ final class AttributedLoader
                         yield new ReflectionClass($class);
                     } catch (\Throwable $e) {
                     }
-
                 }
             }
         }
