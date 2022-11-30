@@ -18,7 +18,7 @@ class AttributedHandler extends AbstractAttributedHandler
 
     public array $attributes = [];
 
-    public function getAnnotation(): string
+    public function getAttribute(): string
     {
         return ClassAttribute::class;
     }
